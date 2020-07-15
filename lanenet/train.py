@@ -56,6 +56,7 @@ def train(train_loader, model, optimizer, epoch):
     t = tqdm(enumerate(iter(train_loader)), leave=False, total=len(train_loader))
 
     for batch_idx, batch in t:
+        #  MES changes to use less GPU memory
         step += 1
         image_data = Variable(batch[0]).type(torch.FloatTensor).to(DEVICE)
         binary_label = Variable(batch[1]).type(torch.LongTensor).to(DEVICE)
@@ -127,7 +128,10 @@ def main():
     val_dataset_file = os.path.join(args.dataset, 'val.txt')
 
     train_dataset = LaneDataSet(train_dataset_file, transform=transforms.Compose([Rescale((512, 256))]))
-    train_loader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True)
+    # MES changes to use less GPU memory
+    # train_loader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=10, shuffle=True)
+
 
     if args.val:
         val_dataset = LaneDataSet(val_dataset_file, transform=transforms.Compose([Rescale((512, 256))]))
