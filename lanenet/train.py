@@ -128,7 +128,7 @@ def main():
     val_dataset_file = os.path.join(args.dataset, 'val.txt')
 
     train_dataset = LaneDataSet(train_dataset_file, transform=transforms.Compose([Rescale((512, 256))]))
-    # MES changes to use less GPU memory
+    # MES changes to use less GPU memory - batch size of 10 is max without OOM errors
     # train_loader = DataLoader(train_dataset, batch_size=args.bs, shuffle=True)
     train_loader = DataLoader(train_dataset, batch_size=10, shuffle=True)
 
