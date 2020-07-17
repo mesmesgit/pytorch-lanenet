@@ -106,6 +106,10 @@ def train(train_loader, model, optimizer, epoch):
                 train_img_list.append(
                     compose_img(image_data, out, binary_label, net_output["instance_seg_logits"], instance_label, i))
             train_img = np.concatenate(train_img_list, axis=1)
+            # MES changes
+            print("train: about to imwrite images")
+            print("train_img: ", train_img)
+            print(" ")
             cv2.imwrite(os.path.join("./output", "train_" + str(epoch + 1) + "_step_" + str(step) + ".png"), train_img)
     return mean_iou.avg
 
