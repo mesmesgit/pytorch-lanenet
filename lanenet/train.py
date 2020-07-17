@@ -87,7 +87,7 @@ def train(train_loader, model, optimizer, epoch):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        if step % 50 == 0:
+        if step % 1 == 0:
             print(
                 "Epoch {ep} Step {st} |({batch}/{size})| ETA: {et:.2f}|Total loss:{tot:.5f}|Binary loss:{bin:.5f}|Instance loss:{ins:.5f}|IoU:{iou:.5f}".format(
                     ep=epoch + 1,
