@@ -44,7 +44,7 @@ def compose_img(image_data, out, binary_label, pix_embedding, instance_label, i)
     # return val_img
     return val_gt
 
-def train(train_loader, model, optimizer, epoch):
+def train(train_loader, model, optimizer, epoch, image_output_path):
     batch_time = AverageMeter()
     mean_iou = AverageMeter()
     total_losses = AverageMeter()
@@ -110,7 +110,7 @@ def train(train_loader, model, optimizer, epoch):
             print("train: about to imwrite images")
             print("train_img: ", train_img)
             print(" ")
-            cv2.imwrite(os.path.join("./output", "train_" + str(epoch + 1) + "_step_" + str(step) + ".png"), train_img)
+            cv2.imwrite(os.path.join(image_output_path, "train_" + str(epoch + 1) + "_step_" + str(step) + ".png"), train_img)
     return mean_iou.avg
 
 
@@ -124,9 +124,12 @@ def main():
     args = parse_args()
 
     save_path = args.save
-
     if not os.path.isdir(save_path):
         os.makedirs(save_path)
+
+    image_output_path = args.image
+    if not os.path.isdir(image_output_path):
+        os.makedirs(image_output_path)
 
     train_dataset_file = os.path.join(args.dataset, 'train.txt')
     val_dataset_file = os.path.join(args.dataset, 'val.txt')
@@ -149,7 +152,7 @@ def main():
 
     for epoch in range(0, args.epochs):
         print(f"Epoch {epoch}")
-        train_iou = train(train_loader, model, optimizer, epoch)
+        train_iou = train(train_loader, model, optimizer, epoch, image_output_path)
         if args.val:
             val_iou = test(val_loader, model, epoch)
         if (epoch + 1) % 5 == 0:
